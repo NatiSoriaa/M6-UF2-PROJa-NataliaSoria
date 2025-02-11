@@ -19,6 +19,24 @@ form {
     text-align: center;
 }
 
+.nombre{
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: none;
+    width: 95%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.nombre::placeholder,
+input.nombre{
+    color: white;
+}
+
 select, input[type="submit"] {
     width: 100%;
     padding: 10px;

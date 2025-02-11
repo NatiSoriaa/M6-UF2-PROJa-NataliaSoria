@@ -2,9 +2,8 @@ window.onload = () => {
     comunidadesAutonomas();
     provincias();
     poblaciones();
-    recibirImagenes()
+    // recibirImagenes()
 }
-
 
 
 async function comunidadesAutonomas(){
@@ -67,23 +66,23 @@ function agregarPoblacion(poblaciones){
 }
 
 
-async function recibirImagenes(){
-    let url = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=images&titles=${encodeURIComponent(poblacio)}&gimlimit=10&prop=imageinfo&iiprop=url';
-    let resolve = await fetch(url);
-    let imagenes = await resolve.json();
+// async function recibirImagenes(){
+//     let url = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=images&titles=${encodeURIComponent(poblacio)}&gimlimit=10&prop=imageinfo&iiprop=url';
+//     let resolve = await fetch(url);
+//     let imagenes = await resolve.json();
     
-    mostrarImagenes(imagenes);
-}
-function clickEnviar(){
-    let enviar = document.getElementById('submit');
-    enviar.addEventListener('click', mostrarImagenes);
-}
-function mostrarImagenes(imagenes){
-    let containerImagenes = document.getElementById('image-container');
+//     mostrarImagenes(imagenes);
+// }
+// function clickEnviar(){
+//     let enviar = document.getElementById('submit');
+//     enviar.addEventListener('click', mostrarImagenes);
+// }
+// function mostrarImagenes(imagenes){
+//     let containerImagenes = document.getElementById('image-container');
     
-    imagenes.forEach (img => {
-        let imagen = document.createElement('img');
-        imagen.append(img);
-        containerImagenes.appendChild(imagen);
-    });
-}
+//     imagenes.forEach (img => {
+//         let imagen = document.createElement('img');
+//         imagen.append(img);
+//         containerImagenes.appendChild(imagen);
+//     });
+// }

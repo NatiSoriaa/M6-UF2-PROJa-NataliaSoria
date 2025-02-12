@@ -12,7 +12,7 @@ async function comunidadesAutonomas(){
     let comunidades = await response.json();
     
     let selectComunidad = document.getElementById('ccaa');
-    selectComunidad.innerHTML = '<option value="" disabled selected>Selecciona una comunidad</option>';
+    selectComunidad.innerHTML = '<option value="" disabled selected>Selecciona una opción</option>';
 
     comunidades.forEach (comunidad => {
         let option = document.createElement('option');
@@ -31,7 +31,7 @@ async function provincias(){
     let provincias = await response.json();
 
     let selectProvincia = document.getElementById('provincia');
-    selectProvincia.innerHTML = '<option value="" disabled selected>Selecciona una provincia</option>';
+    selectProvincia.innerHTML = '<option value="" disabled selected>Selecciona una opción</option>';
 
     provincias.forEach (provincia => {
         if (provincia.parent_code === comunidadSeleccionada){
@@ -53,12 +53,12 @@ async function poblaciones(){
     let poblaciones = await response.json();
 
     let selectPoblacion = document.getElementById('poblacion');
-    selectPoblacion.innerHTML = '<option value="" disabled selected>Selecciona una población</option>';
+    selectPoblacion.innerHTML = '<option value="" disabled selected>Selecciona una opción</option>';
 
     poblaciones.forEach (poblacion => {
         if (poblacion.parent_code === provinciaSeleccionada){
             let option = document.createElement('option');
-            option.value = poblacion.code;
+            option.value = poblacion.label;
             option.textContent = poblacion.label;
             selectPoblacion.appendChild(option);
         } 
@@ -67,25 +67,38 @@ async function poblaciones(){
 
 
 async function recibirImagenes(event) {
-    event.preventDefault(); 
+    event.preventDefault();
 
-    let poblacionSeleccionada = document.getElementById('poblacion').value;  
+    let poblacionSeleccionada = document.getElementById('poblacion').value; 
+
     let url = `https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=images&titles=${encodeURIComponent(poblacionSeleccionada)}&gimlimit=10&prop=imageinfo&iiprop=url`;
-
     let response = await fetch(url);
     let data = await response.json();  
 
     let containerImagenes = document.getElementById('image-container');
-    containerImagenes.innerHTML = '';
+    containerImagenes.innerHTML = '';  
 
+    if (data.query && data.query.pages) {
+        let pages = data.query.pages;
+        let imagesFound = false;  
 
-    for (let pageId in data.query.pages) {
-        let page = data.query.pages[pageId];
-        if (page.imageinfo && page.imageinfo[0] && page.imageinfo[0].url) {
-            let imagen = document.createElement('img');  
-            imagen.src = page.imageinfo[0].url;  
-            imagen.alt = poblacionSeleccionada;  
-            containerImagenes.appendChild(imagen);  
-        } 
+        for (let pageId in pages) {
+            let page = pages[pageId];
+            if (page.imageinfo && page.imageinfo[0] && page.imageinfo[0].url) {
+                let imageBox = document.createElement('div');
+                imageBox.classList.add('image-box');
+                let imagen = document.createElement('img');
+                imagen.classList.add('image-box');
+                imagen.src = page.imageinfo[0].url; 
+                imagen.alt = poblacionSeleccionada;  
+                containerImagenes.appendChild(imagen);
+                imagesFound = true;
+            }
+        }
+        if (!imagesFound) {
+            containerImagenes.innerHTML = "<p>No se encontraron imágenes para la poblacion seleccionada.</p>";
+        }
+    } else {
+        containerImagenes.innerHTML = "<p>No se encontraron imágenes para la poblacion seleccionada.</p>";
     }
 }
